@@ -33,17 +33,22 @@ const Personnels = () => {
         className="container-fluid text-white bg-dark mt-5 pt-3"
         style={{ height: "auto" }}
       >
-        <div className="">
+        <div className="container">
           <div className="text-center">beneficiaries</div>
           <div className="row">
             {beneficiaries.map((b) => {
               return (
                 <div className="col-lg-4 col-md-6 col-xs-6" key={b.Column1}>
-                  <div className="border border-warning card my-3 bg-dark">
+                  <div className="border border-primary card my-3 bg-dark">
                     <div className="p-2 my-3">
-                      <h4 className="card-header text-center text-warning py-3">
+                      <h4 className="card-header text-center text-primary py-3">
                         {b.Surname} {b.Firstname}
                       </h4>
+                      <img
+                        // src={b.[]}
+                        className="card-img-top"
+                        alt="...img"
+                      />
                       <div className="">
                         <p className="d-flex justify-content-between">
                           Provider: <b>{b.Provider}</b>

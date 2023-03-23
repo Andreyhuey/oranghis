@@ -3,11 +3,7 @@ import Personnels from "./components/Personnels";
 import { Search } from "./components";
 
 function App() {
-  return (
-    <div className="App">
-      <Search />
-    </div>
-  );
+  return <Search />;
 }
 
 export default App;

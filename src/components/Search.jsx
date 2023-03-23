@@ -8,7 +8,7 @@ const Search = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/sample.json`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
@@ -19,7 +19,6 @@ const Search = () => {
       .then((json) => {
         setBeneficiaries(json.people);
 
-        console.log(json.people);
         const Results = json.people;
 
         const filteredData = Results?.filter((person) =>
@@ -43,7 +42,7 @@ const Search = () => {
     );
 
   return (
-    <>
+    <div className="container-fluid text-white bg-dark mt-5 pt-3">
       <div
         className="container-fluid text-white bg-dark mt-5 pt-3"
         style={{ height: "auto" }}
@@ -60,14 +59,30 @@ const Search = () => {
           <div className="row">
             {beneficiaries.map((b) => {
               return (
-                <div className="col-lg-4 col-md-6 col-xs-6" key={b.Column1}>
-                  <div className="border border-warning card my-3 bg-dark">
-                    <div className="p-2 my-3">
-                      <h4 className="card-header text-center text-warning py-3">
+                <div className="col-lg-3 col-md-6 col-xs-6" key={b.Column1}>
+                  <div className="border border-white card my-3 bg-dark">
+                    <h4 className="text-center text-primary">
+                      {b["Goverment ID"]}
+                    </h4>
+                    <div className="p-3">
+                      <h6 className="card-header text-center py-3">
                         {b.Surname} {b.Firstname}
-                      </h4>
-                      <div className="">
-                        <p></p>
+                      </h6>
+
+                      <img
+                        src={b["Picture URL"]}
+                        width={250}
+                        height={250}
+                        className="card-img-top"
+                        alt="...img"
+                      />
+                      <div className="pt-5 border-white">
+                        <p className="d-flex justify-content-between">
+                          Provider: <b>{b.Provider}</b>
+                        </p>
+                        <p className="d-flex justify-content-between">
+                          Policy Number: <b>{b["Policy Number"]}</b>
+                        </p>
                         <p className="d-flex justify-content-between">
                           Age: <b>{b.Age}</b>
                         </p>
@@ -79,12 +94,6 @@ const Search = () => {
                         </p>
                         <p className="d-flex justify-content-between">
                           LGA: <b>{b.LGA}</b>
-                        </p>
-                        <p className="d-flex justify-content-between">
-                          Government ID: <b>{b["Goverment ID"]}</b>
-                        </p>
-                        <p className="d-flex justify-content-between">
-                          Policy Number: <b>{b["Policy Number"]}</b>
                         </p>
                         <div>
                           <a
@@ -105,7 +114,7 @@ const Search = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
