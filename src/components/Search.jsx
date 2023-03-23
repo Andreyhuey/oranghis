@@ -2,13 +2,43 @@ import React, { useEffect, useState } from "react";
 
 const Search = () => {
   const [beneficiaries, setBeneficiaries] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState();
   const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch(
+  //     `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/tescom.json`,
+  //     {
+  //       headers: {
+  //         Accept: "application/vnd.github.v3+json",
+  //       },
+  //     }
+  //   )
+  //     .then((response) => response.json())
+  //     .then((json) => {
+  //       // setBeneficiaries(json.people);
+
+  //       console.log(json.people);
+  //       const Results = json.people;
+
+  //       const filteredData = Results?.filter((person) =>
+  //         person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
+  //       );
+  //       setBeneficiaries(filteredData);
+  //       console.log(filteredData);
+  //     })
+  //     .catch((error) => console.error(error));
+  //   setLoading(false);
+  // }, [searchTerm]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
     setLoading(true);
+
     fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Superb.json`,
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/superb.json`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
@@ -18,10 +48,7 @@ const Search = () => {
       .then((response) => response.json())
       .then((json) => {
         // setBeneficiaries(json.people);
-
-        console.log(json.people);
         const Results = json.people;
-
         const filteredData = Results?.filter((person) =>
           person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
         );
@@ -30,7 +57,7 @@ const Search = () => {
       })
       .catch((error) => console.error(error));
     setLoading(false);
-  }, [searchTerm]);
+  };
 
   if (isLoading)
     return (
@@ -49,13 +76,27 @@ const Search = () => {
         style={{ height: "auto" }}
       >
         <div className="text-center h1">beneficiaries</div>
-        <div className="d-flex justify-content-center text-white my-3 py-2">
+        {/* <div className="d-flex justify-content-center text-white my-3 py-2">
           <input
             placeholder="Goverment ID"
             type="text"
             onChange={(e) => setSearchTerm(e.target.value?.toLowerCase())}
           />
-        </div>
+        </div> */}
+        <form className="form-inline" onSubmit={handleSearch}>
+          <div className="d-flex justify-content-center">
+            <input
+              className="form-control mr-sm-2"
+              type="search"
+              placeholder="GOV ID e.g TC09500"
+              onChange={(e) => setSearchTerm(e.target.value?.toLowerCase())}
+              aria-label="Search"
+            />
+            <button className="btn btn-primary my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </div>
+        </form>
         <div className="">
           <div className="row">
             {beneficiaries.map((b) => {
