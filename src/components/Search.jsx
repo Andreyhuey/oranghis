@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const Personnels = () => {
+const Search = () => {
   const [beneficiaries, setBeneficiaries] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  const getData = () => {
+  useEffect(() => {
     setLoading(true);
     fetch(
       `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/sample.json`,
@@ -17,15 +18,29 @@ const Personnels = () => {
       .then((response) => response.json())
       .then((json) => {
         setBeneficiaries(json.people);
+
         console.log(json.people);
+        const Results = json.people;
+
+        const filteredData = Results?.filter((person) =>
+          person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
+        );
+        setBeneficiaries(filteredData);
+        console.log(filteredData);
       })
       .catch((error) => console.error(error));
     setLoading(false);
-  };
+  }, [searchTerm]);
 
-  useEffect(() => {
-    getData();
-  }, []);
+  if (isLoading)
+    return (
+      <h1
+        className="display-5 text-warning d-flex align-items-center justify-content-center text-center"
+        style={{ height: "80vh" }}
+      >
+        ...Search Marvel's Database
+      </h1>
+    );
 
   return (
     <>
@@ -33,6 +48,13 @@ const Personnels = () => {
         className="container-fluid text-white bg-dark mt-5 pt-3"
         style={{ height: "auto" }}
       >
+        <div className="d-flex justify-content-center text-white my-3 py-2">
+          <input
+            placeholder="Goverment ID"
+            type="text"
+            onChange={(e) => setSearchTerm(e.target.value?.toLowerCase())}
+          />
+        </div>
         <div className="">
           <div className="text-center">beneficiaries</div>
           <div className="row">
@@ -45,14 +67,9 @@ const Personnels = () => {
                         {b.Surname} {b.Firstname}
                       </h4>
                       <div className="">
-                        <p className="d-flex justify-content-between">
-                          Provider: <b>{b.Provider}</b>
-                        </p>
+                        <p></p>
                         <p className="d-flex justify-content-between">
                           Age: <b>{b.Age}</b>
-                        </p>
-                        <p className="d-flex justify-content-between">
-                          Phone Number: <b>{b["Phone Number"]}</b>
                         </p>
                         <p className="d-flex justify-content-between">
                           Gender: <b>{b.Gender}</b>
@@ -69,12 +86,12 @@ const Personnels = () => {
                         <p className="d-flex justify-content-between">
                           Policy Number: <b>{b["Policy Number"]}</b>
                         </p>
-                        <div className="d-flex justify-content-end">
+                        <div>
                           <a
                             href={b.link}
                             target="_blink"
                             rel="noreferrer"
-                            className="btn btn-outline-warning"
+                            className="btn btn-outline-success"
                           >
                             Edit
                           </a>
@@ -92,4 +109,4 @@ const Personnels = () => {
   );
 };
 
-export default Personnels;
+export default Search;
