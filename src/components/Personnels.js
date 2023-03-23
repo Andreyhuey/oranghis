@@ -7,28 +7,48 @@ const Personnels = () => {
   const [isLoading, setLoading] = useState(true);
 
   const getData = () => {
-    try {
-      fetch(`https://superb-haupia-873ebf.netlify.app/source.json`, {
-        mode: "no-cors",
-        request: "GET",
+    fetch(
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
+      {
         headers: {
-          "Content-Type": "application/json",
+          Accept: "application/vnd.github.v3+json",
         },
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setBeneficiaries(json.people);
+        console.log(json.people);
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
     getData();
   });
 
-  return <div>fetch</div>;
+  return (
+    <>
+      <div
+        className="container-fluid text-white bg-dark mt-5 pt-3"
+        style={{ height: "auto" }}
+      >
+        <div className="h4 text-center">
+          <div>beneficiaries</div>
+          {beneficiaries.map((b) => {
+            return (
+              <div className="card" key={b.Column1}>
+                <h3>
+                  {b.Surname} {b.Firstname}
+                </h3>
+                <p>{b["Policy Number"]}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Personnels;

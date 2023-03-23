@@ -1,4 +1,4 @@
-import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
 import Personnels from "./components/Personnels";
 
 function App() {
