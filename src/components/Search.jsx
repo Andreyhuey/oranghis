@@ -38,7 +38,7 @@ const Search = () => {
     setLoading(true);
 
     fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/tescom.json`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
@@ -47,7 +47,7 @@ const Search = () => {
     )
       .then((response) => response.json())
       .then((json) => {
-        // setBeneficiaries(json.people);
+        setBeneficiaries(json.people);
         const Results = json.people;
         const filteredData = Results?.filter((person) =>
           person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
