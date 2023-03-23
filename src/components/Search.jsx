@@ -8,7 +8,7 @@ const Search = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/sample.json`,
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
