@@ -38,7 +38,7 @@ const Search = () => {
     setLoading(true);
 
     fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/superb.json`,
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
@@ -89,7 +89,7 @@ const Search = () => {
               className="form-control mr-sm-2"
               type="search"
               placeholder="GOV ID e.g TC09500"
-              onChange={(e) => setSearchTerm(e.target.value?.toLowerCase())}
+              onChange={(e) => setSearchTerm(e.target.value)}
               aria-label="Search"
             />
             <button className="btn btn-primary my-2 my-sm-0" type="submit">
