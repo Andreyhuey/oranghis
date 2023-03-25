@@ -65,17 +65,17 @@ const Search = () => {
 
   // Render search input and results
   return (
-    <div className="container-fluid vh-auto bg-dark text-white">
+    <div className="container-fluid vh-100 bg-dark text-white">
       <div className="vh-auto">
         <h3 className="display-1 text-bold text-center">
           Find Your beneficiaries
         </h3>
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center vw-50">
           <input
             className="form-control mr-sm-2"
             type="search"
             value={searchTerm}
-            placeholder="GOV ID e.g TC,SB,TH"
+            placeholder="GOV ID e.g CS04321"
             aria-label="Search"
             onChange={(event) => setSearchTerm(event.target.value)}
           />
@@ -95,23 +95,43 @@ const Search = () => {
                 className="col-lg-3 col-md-6 col-xs-6 col-sm-6"
                 key={b["Goverment ID"]}
               >
-                <div className="border border-primary bg-primary text card my-3">
+                <div className="border border-black bg-black text card my-3 py-3">
                   <h4 className="text-center">{b["Goverment ID"]}</h4>
                   <div className="p-3">
                     <h6 className="card-header text-center py-3">
-                      {b.Surname + b.Firstname}
+                      {b.Surname + " " + b.Firstname}
                     </h6>
 
-                    <div className="pt-5">
-                      <p className="d-flex justify-content-between">
+                    <div className="d-flex justify-content-center">
+                      <a
+                        href={b.link}
+                        target="_blink"
+                        rel="noreferrer"
+                        className="btn btn-lg btn-secondary btn-block"
+                      >
+                        Edit
+                      </a>
+                    </div>
+
+                    <div className="pt-2">
+                      {/* <p className="d-flex justify-content-between">
                         Provider: <b>{b.Provider}</b>
+                      </p>
+                      <p className="d-flex justify-content-between">
+                        Status: <b>{b.Status}</b>
+                      </p>
+                      <p className="d-flex justify-content-between">
+                        Gender: <b>{b.Gender}</b>
+                      </p>
+                      <p className="d-flex justify-content-between">
+                        Age: <b>{b.Age}</b>
                       </p>
                       <p className="d-flex justify-content-between">
                         Phone Number: <b>{b["Phone Number"]}</b>
                       </p>
                       <p className="d-flex justify-content-between">
                         Policy Number: <b>{b["Policy Number"]}</b>
-                      </p>
+                      </p> */}
                       {/* <p className="d-flex justify-content-between">
                             Age: <b>{b.Age}</b>
                           </p>
@@ -124,17 +144,6 @@ const Search = () => {
                           <p className="d-flex justify-content-between">
                             LGA: <b>{b.LGA}</b>
                           </p> */}
-
-                      <div className="align-items-center d-flex">
-                        <a
-                          href={b.link}
-                          target="_blink"
-                          rel="noreferrer"
-                          className="btn btn-lg btn-light btn-block"
-                        >
-                          Edit
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </div>
