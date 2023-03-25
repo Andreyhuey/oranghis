@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 const Search = () => {
   const [people, setPeople] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("cs034");
+  const [isLoading, setLoading] = useState(false);
   const [beneficiaries, setBeneficiaries] = useState([]);
 
   // fetch data from server and store in state
   useEffect(() => {
     fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/sample.json`,
+      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
@@ -27,13 +29,30 @@ const Search = () => {
   // Filter data based on search term
   useEffect(
     (searchTerm) => {
+      setLoading(true);
       const filtered = people.filter((item) =>
         item["Goverment ID"].includes(searchTerm)
       );
       setBeneficiaries(filtered);
+      setLoading(false);
     },
     [people, searchTerm]
   );
+
+  if (isLoading)
+    return (
+      <div
+        className="display-1 d-flex align-items-center justify-content-center"
+        style={{ height: "100vh", backgroundColor: "#2b6777" }}
+      >
+        <BeatLoader
+          color="orange"
+          size={13}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
 
   // handle search button click
 
@@ -46,8 +65,8 @@ const Search = () => {
 
   // Render search input and results
   return (
-    <div className="container-fluid vh-100 bg-dark text-white">
-      <div>
+    <div className="container-fluid vh-auto bg-dark text-white">
+      <div className="vh-auto">
         <h3 className="display-1 text-bold text-center">
           Find Your beneficiaries
         </h3>
