@@ -3,100 +3,73 @@ import React, { useEffect, useState } from "react";
 const Search = () => {
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [searchTerm, setSearchTerm] = useState();
-  const [isLoading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetch(
-  //     `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/tescom.json`,
-  //     {
-  //       headers: {
-  //         Accept: "application/vnd.github.v3+json",
-  //       },
+  useEffect(() => {
+    const handleSearch = () => {
+      fetch(
+        `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
+        {
+          headers: {
+            Accept: "application/vnd.github.v3+json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          setBeneficiaries(json.people);
+          const Results = json.people;
+          const filteredData = Results?.filter((person) =>
+            person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
+          );
+          setBeneficiaries(filteredData);
+          console.log(filteredData);
+        })
+        .catch((error) => console.error(error));
+    };
+
+    handleSearch();
+  }, [searchTerm]);
+
+  //   const result = data.people;
+
+  // const set = [];
+
+  // function lookUpProfile(word) {
+  //   for (let i = 0; i < result.length; i++) {
+  //     const p = result[i].ID;
+  //     if (p.toLowerCase().includes(word)) {
+  //       console.log(result[i]);
+  //       set.push(result[i]);
   //     }
-  //   )
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //       // setBeneficiaries(json.people);
+  //   }
+  // }
 
-  //       console.log(json.people);
-  //       const Results = json.people;
+  // const show = lookUpProfile("1");
 
-  //       const filteredData = Results?.filter((person) =>
-  //         person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
-  //       );
-  //       setBeneficiaries(filteredData);
-  //       console.log(filteredData);
-  //     })
-  //     .catch((error) => console.error(error));
-  //   setLoading(false);
-  // }, [searchTerm]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-
-    setLoading(true);
-
-    fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/tescom.json`,
-      {
-        headers: {
-          Accept: "application/vnd.github.v3+json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setBeneficiaries(json.people);
-        const Results = json.people;
-        const filteredData = Results?.filter((person) =>
-          person?.["Goverment ID"]?.toLowerCase()?.includes(searchTerm)
-        );
-        setBeneficiaries(filteredData);
-        console.log(filteredData);
-      })
-      .catch((error) => console.error(error));
-    setLoading(false);
-  };
-
-  if (isLoading)
-    return (
-      <h1
-        className="display-5 text-warning d-flex align-items-center justify-content-center text-center"
-        style={{ height: "80vh" }}
-      >
-        ...
-      </h1>
-    );
+  // show;
+  // console.log(`NO: ${set.length}`);
 
   return (
-    <div className="container-fluid text-white bg-dark pt-3">
+    <div className="container-fluid text-white bg-dark pt-3 vh-100">
       <div
         className="container-fluid text-white bg-dark pt-3"
         style={{ height: "auto" }}
       >
         <div className="text-center h1">beneficiaries</div>
-        {/* <div className="d-flex justify-content-center text-white my-3 py-2">
+
+        <div className="d-flex justify-content-center">
           <input
-            placeholder="Goverment ID"
-            type="text"
-            onChange={(e) => setSearchTerm(e.target.value?.toLowerCase())}
+            className="form-control mr-sm-2"
+            type="search"
+            placeholder="GOV ID e.g TC09500"
+            aria-label="Search"
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div> */}
-        <form className="form-inline" onSubmit={handleSearch}>
-          <div className="d-flex justify-content-center">
-            <input
-              className="form-control mr-sm-2"
-              type="search"
-              placeholder="GOV ID e.g TC09500"
-              onChange={(e) => setSearchTerm(e.target.value)}
-              aria-label="Search"
-            />
-            <button className="btn btn-primary my-2 my-sm-0" type="submit">
-              Search
-            </button>
-          </div>
-        </form>
+          <button className="btn btn-primary my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </div>
+
         <div className="">
           <div className="row">
             {beneficiaries.map((b) => {
