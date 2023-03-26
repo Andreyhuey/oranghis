@@ -76,7 +76,7 @@ const Search = () => {
 
   // Render search input and results
   return (
-    <div className="container-fluid vh-100 bg-dark text-white">
+    <div className="container vh-auto text-white">
       <div className="vh-auto">
         <h3 className="display-1 text-bold text-center">
           Find Your beneficiaries
@@ -110,7 +110,7 @@ const Search = () => {
                   <h4 className="text-center">{b["Goverment ID"]}</h4>
                   <div className="p-3">
                     <h6 className="card-header text-center py-3">
-                      {b.Surname + " " + b.Firstname}
+                      {b.Surname + " " + b.Firstname?.toUpperCase()}
                     </h6>
 
                     <div className="d-flex justify-content-center">
