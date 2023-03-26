@@ -3,27 +3,35 @@ import { BeatLoader } from "react-spinners";
 
 const Search = () => {
   const [people, setPeople] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("cs034");
-  const [isLoading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("CS0345");
+  const [loading, setLoading] = useState(true);
   const [beneficiaries, setBeneficiaries] = useState([]);
 
   // fetch data from server and store in state
   useEffect(() => {
-    fetch(
-      `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
-      {
-        headers: {
-          Accept: "application/vnd.github.v3+json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
+          {
+            headers: {
+              Accept: "application/vnd.github.v3+json",
+            },
+          }
+        );
+        const json = await response.json();
         const result = json.people;
         console.log(result);
         setPeople(result);
-      })
-      .catch((error) => console.error(error));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
   }, []);
 
   // Filter data based on search term
@@ -36,17 +44,17 @@ const Search = () => {
       setBeneficiaries(filtered);
       setLoading(false);
     },
-    [people, searchTerm]
+    [people, searchTerm, loading]
   );
 
-  if (isLoading)
+  if (loading)
     return (
       <div
         className="display-1 d-flex align-items-center justify-content-center"
         style={{ height: "100vh", backgroundColor: "#2b6777" }}
       >
         <BeatLoader
-          color="orange"
+          color="#ffff"
           size={13}
           aria-label="Loading Spinner"
           data-testid="loader"
@@ -57,10 +65,13 @@ const Search = () => {
   // handle search button click
 
   const handleSearch = () => {
+    setLoading(true);
     const filtered = people.filter((item) =>
       item["Goverment ID"].toLowerCase().includes(searchTerm.toLowerCase())
     );
     setBeneficiaries(filtered);
+    console.log(filtered);
+    setLoading(false);
   };
 
   // Render search input and results
