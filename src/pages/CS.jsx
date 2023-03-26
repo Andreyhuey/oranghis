@@ -79,7 +79,7 @@ const CS = () => {
     <section className="container-fluid">
       <div className="">
         <h3 className="text-bold fw-bold text-center py-3">
-          ODCHD Core Civil Beneficiaries
+          ODCHC Core Civil Beneficiaries
         </h3>
         <div className="d-flex justify-content-center vw-50">
           <input
