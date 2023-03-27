@@ -1,3 +1,4 @@
+export { default as Homepage } from "./Homepage.jsx";
 export { default as CS } from "./CS.jsx";
 export { default as IRS } from "./IRS.jsx";
 export { default as LG } from "./LG.jsx";

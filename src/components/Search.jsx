@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
+import Nav from "./Nav";
 
 const Search = () => {
   const [people, setPeople] = useState([]);
+  const [count, setCount] = useState("");
   const [searchTerm, setSearchTerm] = useState("CS0345");
   const [loading, setLoading] = useState(true);
   const [beneficiaries, setBeneficiaries] = useState([]);
@@ -34,6 +36,35 @@ const Search = () => {
     fetchData();
   }, []);
 
+  // handle search button click
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    setLoading(true);
+    const filtered = people.filter(
+      (item) =>
+        item["Goverment ID"]
+          .toLowerCase()
+          .replaceAll(" ", "")
+          .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
+        (item.Surname + " " + item.Firstname)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (item.Firstname &&
+          item.Firstname.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item.Surname + " " + item.Firstname)
+          .toLowerCase()
+          .split(" ")
+          .some((word) => word.includes(searchTerm.toLowerCase()))
+    );
+    setBeneficiaries(filtered);
+    setCount(filtered.length);
+    console.log(filtered);
+    setLoading(false);
+  };
+
+  const handleCount = () => {};
+
   // Filter data based on search term
   useEffect(
     (searchTerm) => {
@@ -62,70 +93,73 @@ const Search = () => {
       </div>
     );
 
-  // handle search button click
-
-  const handleSearch = () => {
-    setLoading(true);
-    const filtered = people.filter((item) =>
-      item["Goverment ID"].toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setBeneficiaries(filtered);
-    console.log(filtered);
-    setLoading(false);
-  };
-
   // Render search input and results
   return (
-    <div className="container vh-auto text-white">
-      <div className="vh-auto">
-        <h3 className="display-1 text-bold text-center">
-          Find Your beneficiaries
-        </h3>
-        <div className="d-flex justify-content-center vw-50">
-          <input
-            className="form-control mr-sm-2"
-            type="search"
-            value={searchTerm}
-            placeholder="GOV ID e.g CS04321"
-            aria-label="Search"
-            onChange={(event) => setSearchTerm(event.target.value)}
-          />
-          <button
-            onClick={handleSearch}
-            className="btn btn-primary my-2 my-sm-0"
-            type="submit"
+    <>
+      <Nav />
+      <div className="container vh-auto">
+        <div className="vh-auto">
+          <h3 className="display-1 text-bold text-center">
+            Find Your beneficiaries
+          </h3>
+          <form
+            className="d-flex justify-content-center vw-50"
+            onSubmit={handleSearch}
           >
-            Search
-          </button>
-        </div>
+            <input
+              className="form-control mr-sm-2"
+              minLength={5}
+              type="search"
+              value={searchTerm}
+              placeholder="GOV ID e.g CS04321"
+              aria-label="Search"
+              onChange={(event) => setSearchTerm(event.target.value)}
+              required
+            />
+            <button
+              className="btn btn-primary my-2 my-sm-0"
+              type="submit"
+              value="submit"
+            >
+              Search
+            </button>
+          </form>
 
-        <div className="row">
-          {beneficiaries.map((b) => {
-            return (
-              <div
-                className="col-lg-3 col-md-6 col-xs-6 col-sm-6"
-                key={b["Goverment ID"]}
-              >
-                <div className="border border-black bg-black text card my-3 py-3">
-                  <h4 className="text-center">{b["Goverment ID"]}</h4>
-                  <div className="p-3">
-                    <h6 className="card-header text-center py-3">
-                      {b.Surname + " " + b.Firstname?.toUpperCase()}
-                    </h6>
+          <div className="fw-bold text-center mt-2">
+            Search Result : <b className="text-primary">{count}</b>
+          </div>
 
-                    <div className="d-flex justify-content-center">
-                      <a
-                        href={b.link}
-                        target="_blink"
-                        rel="noreferrer"
-                        className="btn btn-lg btn-secondary btn-block"
-                      >
-                        Edit
-                      </a>
-                    </div>
+          {handleCount()}
 
-                    <div className="pt-2">
-                      {/* <p className="d-flex justify-content-between">
+          <div className="row">
+            {beneficiaries.map((b) => {
+              return (
+                <div
+                  className="col-lg-3 col-md-6 col-xs-6 col-sm-6"
+                  key={b["Goverment ID"]}
+                >
+                  <div className="border bg-dark text-white card my-3 py-3">
+                    <h4 className="text-center">{b["Goverment ID"]}</h4>
+                    <div className="p-3">
+                      <h6 className="card-header text-center py-3">
+                        {b.Surname?.toUpperCase() +
+                          " " +
+                          b.Firstname?.toUpperCase()}
+                      </h6>
+
+                      <div className="d-flex justify-content-center">
+                        <a
+                          href={b.link}
+                          target="_blink"
+                          rel="noreferrer"
+                          className="btn btn-lg btn-secondary btn-block"
+                        >
+                          Edit
+                        </a>
+                      </div>
+
+                      <div className="pt-2">
+                        {/* <p className="d-flex justify-content-between">
                         Provider: <b>{b.Provider}</b>
                       </p>
                       <p className="d-flex justify-content-between">
@@ -143,7 +177,7 @@ const Search = () => {
                       <p className="d-flex justify-content-between">
                         Policy Number: <b>{b["Policy Number"]}</b>
                       </p> */}
-                      {/* <p className="d-flex justify-content-between">
+                        {/* <p className="d-flex justify-content-between">
                             Age: <b>{b.Age}</b>
                           </p>
                           <p className="d-flex justify-content-between">
@@ -155,15 +189,16 @@ const Search = () => {
                           <p className="d-flex justify-content-between">
                             LGA: <b>{b.LGA}</b>
                           </p> */}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 
   // const set = [];

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
+import { Nav } from "../components";
 
 const TC = () => {
   const [people, setPeople] = useState([]);
-  const [searchTerm, setSearchTerm] = useState();
-  const [count, setCount] = useState();
+  const [count, setCount] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [beneficiaries, setBeneficiaries] = useState([]);
 
@@ -14,7 +15,7 @@ const TC = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
+          `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/tc.json`,
           {
             headers: {
               Accept: "application/vnd.github.v3+json",
@@ -40,8 +41,21 @@ const TC = () => {
     event.preventDefault();
 
     setLoading(true);
-    const filtered = people.filter((item) =>
-      item["Goverment ID"].toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = people.filter(
+      (item) =>
+        item["Goverment ID"]
+          .toLowerCase()
+          .replaceAll(" ", "")
+          .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
+        (item.Surname + " " + item.Firstname)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (item.Firstname &&
+          item.Firstname.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item.Surname + " " + item.Firstname)
+          .toLowerCase()
+          .split(" ")
+          .some((word) => word.includes(searchTerm.toLowerCase()))
     );
     setBeneficiaries(filtered);
     setCount(filtered.length);
@@ -80,67 +94,72 @@ const TC = () => {
 
   // Renders search input and results
   return (
-    <section className="container-fluid">
-      <div className="">
-        <h3 className="text-bold fw-bold text-center py-3">
-          ODCHC TESCOM Beneficiaries
-        </h3>
-        <form
-          className="d-flex justify-content-center vw-50"
-          onSubmit={handleSearch}
-        >
-          <input
-            className="form-control mr-sm-2"
-            minLength="5"
-            type="search"
-            value={searchTerm}
-            placeholder="GOV ID e.g CS04321"
-            onChange={(event) => setSearchTerm(event.target.value)}
-            required
-          />
-          <button
-            className="btn btn-primary my-2 my-sm-0"
-            type="submit"
-            value="submit"
+    <>
+      <Nav />
+      <section className="container-fluid">
+        <div className="">
+          <h3 className="text-bold fw-bold text-center py-3">
+            ODCHC TESCOM Beneficiaries
+          </h3>
+          <form
+            className="d-flex justify-content-center vw-50"
+            onSubmit={handleSearch}
           >
-            Search
-          </button>
-        </form>
-        <div className="fw-bold text-center mt-2">Search Result : {count}</div>
+            <input
+              className="form-control mr-sm-2"
+              minLength="5"
+              type="search"
+              value={searchTerm}
+              placeholder="GOV ID e.g TC02285"
+              onChange={(event) => setSearchTerm(event.target.value)}
+              required
+            />
+            <button
+              className="btn btn-primary my-2 my-sm-0"
+              type="submit"
+              value="submit"
+            >
+              Search
+            </button>
+          </form>
+          <div className="fw-bold text-center mt-2">
+            Search Result : <b className="text-primary">{count}</b>
+          </div>
 
-        <div className="row">
-          {beneficiaries.map((b) => {
-            return (
-              <div
-                className="col-lg-3 col-md-6 col-xs-6 col-sm-6"
-                key={b["Goverment ID"]}
-              >
-                <div className="border bg-dark text-white card my-3 py-3">
-                  <h4 className="card-header text-center">
-                    {b["Goverment ID"]}
-                  </h4>
-                  <div className="pt-2">
-                    <h6 className="py-3 text-center">
-                      {b.Surname + " " + b.Firstname?.toUpperCase()}
-                    </h6>
-                    <div className="card-footer d-flex justify-content-center">
-                      <a
-                        href={b.link}
-                        target="_blink"
-                        rel="noreferrer"
-                        className="btn btn-lg btn-secondary btn-block"
-                      >
-                        Edit
-                      </a>
+          <div className="row">
+            {beneficiaries.map((b) => {
+              return (
+                <div
+                  className="col-lg-3 col-md-6 col-xs-6 col-sm-6"
+                  key={b["Goverment ID"]}
+                >
+                  <div className="border bg-dark text-white card my-3 py-3">
+                    <h4 className="card-header text-center">
+                      {b["Goverment ID"]}
+                    </h4>
+                    <div className="pt-2">
+                      <h6 className="py-3 text-center">
+                        {b.Surname + " " + b.Firstname?.toUpperCase()}
+                      </h6>
+                      <div className="card-footer d-flex justify-content-center">
+                        <a
+                          href={b.link}
+                          target="_blink"
+                          rel="noreferrer"
+                          className="btn btn-lg btn-secondary btn-block"
+                        >
+                          Edit
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
