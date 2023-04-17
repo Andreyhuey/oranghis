@@ -15,7 +15,7 @@ const Search = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
+          `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/Source.json`,
           {
             headers: {
               Accept: "application/vnd.github.v3+json",
@@ -34,6 +34,7 @@ const Search = () => {
     }
 
     fetchData();
+    setLoading(false);
   }, []);
 
   // handle search button click
@@ -43,20 +44,17 @@ const Search = () => {
     setLoading(true);
     const filtered = people.filter(
       (item) =>
-        item["Goverment ID"]
-          .toLowerCase()
-          .replaceAll(" ", "")
-          .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
-        (item.Surname + " " + item.Firstname)
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        (item.Firstname &&
-          item.Firstname.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item.Surname + " " + item.Firstname)
-          .toLowerCase()
-          .split(" ")
-          .some((word) => word.includes(searchTerm.toLowerCase()))
+        function lookUpProfile(searchTerm) {
+          for (let i = 0; i < item.length; i++) {
+            const p = item[i]["Policy Number"];
+            if (p === searchTerm) {
+              console.log(item[i]);
+              return item[i];
+            }
+          }
+        }
     );
+
     setBeneficiaries(filtered);
     setCount(filtered.length);
     console.log(filtered);
@@ -111,7 +109,7 @@ const Search = () => {
               minLength={5}
               type="search"
               value={searchTerm}
-              placeholder="GOV ID e.g CS04321"
+              placeholder="GOV ID or NAME e.g CS04321"
               aria-label="Search"
               onChange={(event) => setSearchTerm(event.target.value)}
               required
@@ -232,7 +230,7 @@ const Search = () => {
   //           <input
   //             className="form-control mr-sm-2"
   //             type="search"
-  //             placeholder="GOV ID e.g TC09500"
+  //             placeholder="GOV ID or NAME e.g TC09500"
   //             aria-label="Search"
   //             onChange={(e) => setSearchTerm(e.target.value)}
   //           />

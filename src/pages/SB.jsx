@@ -43,20 +43,33 @@ const SB = () => {
     setLoading(true);
     const filtered = people.filter(
       (item) =>
+        // for searching of the data with Goverment ID, either in lower case or uppercase or just numbers alone
         item["Goverment ID"]
           .toLowerCase()
           .replaceAll(" ", "")
           .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
-        (item.Surname + " " + item.Firstname)
+        // for searching through the data with surname, surname & firstname
+        (item.Surname.toLowerCase() + " " + item.Firstname.toLowerCase())
           .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        (item.Firstname &&
-          item.Firstname.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item.Surname + " " + item.Firstname)
+          .replaceAll(" ", "")
+          .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
+        // for searching through the data with firstname, firstname & surname
+        (item.Firstname.toLowerCase() + " " + item.Surname.toLowerCase())
           .toLowerCase()
-          .split(" ")
-          .some((word) => word.includes(searchTerm.toLowerCase()))
+          .replaceAll(" ", "")
+          .includes(searchTerm.toLowerCase().replaceAll(" ", ""))
+
+      // yet to perfect, beware!!!
+      // (item.Surname.toLowerCase() + " " + item.Firstname.toLowerCase())
+      //   .toLowerCase()
+      //   .split(" ")
+      //   .some(
+      //     (word) =>
+      //       word.includes(searchTerm.toLowerCase().split(" ")[0]) ||
+      //       word.includes(searchTerm.toLowerCase().split(" ")[1])
+      //   )
     );
+
     setBeneficiaries(filtered);
     setCount(filtered.length);
     console.log(filtered);
@@ -110,7 +123,7 @@ const SB = () => {
               minLength="5"
               type="search"
               value={searchTerm}
-              placeholder="GOV ID e.g SB10321"
+              placeholder="GOV ID or NAME e.g SB10321"
               onChange={(event) => setSearchTerm(event.target.value)}
               required
             />

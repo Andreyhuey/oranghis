@@ -9,30 +9,30 @@ const CS = () => {
   const [loading, setLoading] = useState(true);
   const [beneficiaries, setBeneficiaries] = useState([]);
 
-  // fetch data from server and store in state
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
-          {
-            headers: {
-              Accept: "application/vnd.github.v3+json",
-            },
-          }
-        );
-        const json = await response.json();
-        const result = json.people;
-        console.log(result);
-        setPeople(result);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
+  // fetch data from server and store in setPeople(array) state
+  async function fetchData() {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://raw.githubusercontent.com/Andreyhuey/my-app/master/src/data/cs.json`,
+        {
+          headers: {
+            Accept: "application/vnd.github.v3+json",
+          },
+        }
+      );
+      const json = await response.json();
+      const result = json.people;
+      console.log(result);
+      setPeople(result);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -43,20 +43,33 @@ const CS = () => {
     setLoading(true);
     const filtered = people.filter(
       (item) =>
+        // for searching of the data with Goverment ID, either in lower case or uppercase or just numbers alone
         item["Goverment ID"]
           .toLowerCase()
           .replaceAll(" ", "")
           .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
-        (item.Surname + " " + item.Firstname)
+        // for searching through the data with surname, surname & firstname
+        (item.Surname.toLowerCase() + " " + item.Firstname.toLowerCase())
           .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        (item.Firstname &&
-          item.Firstname.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item.Surname + " " + item.Firstname)
+          .replaceAll(" ", "")
+          .includes(searchTerm.toLowerCase().replaceAll(" ", "")) ||
+        // for searching through the data with firstname, firstname & surname
+        (item.Firstname.toLowerCase() + " " + item.Surname.toLowerCase())
           .toLowerCase()
-          .split(" ")
-          .some((word) => word.includes(searchTerm.toLowerCase()))
+          .replaceAll(" ", "")
+          .includes(searchTerm.toLowerCase().replaceAll(" ", ""))
+
+      // yet to perfect, beware!!!
+      // (item.Surname.toLowerCase() + " " + item.Firstname.toLowerCase())
+      //   .toLowerCase()
+      //   .split(" ")
+      //   .some(
+      //     (word) =>
+      //       word.includes(searchTerm.toLowerCase().split(" ")[0]) ||
+      //       word.includes(searchTerm.toLowerCase().split(" ")[1])
+      //   )
     );
+
     setBeneficiaries(filtered);
     setCount(filtered.length);
     console.log(filtered);
@@ -81,7 +94,7 @@ const CS = () => {
     return (
       <div
         className="display-1 d-flex align-items-center justify-content-center"
-        style={{ height: "100vh", backgroundColor: "#2b6777" }}
+        style={{ height: "100vh", backgroundColor: "#000000" }}
       >
         <BeatLoader
           color="#ffff"
@@ -110,7 +123,7 @@ const CS = () => {
               minLength="5"
               type="search"
               value={searchTerm}
-              placeholder="GOV ID e.g CS04321"
+              placeholder="GOV ID or NAME e.g CS04320"
               onChange={(event) => setSearchTerm(event.target.value)}
               required
             />
@@ -137,10 +150,17 @@ const CS = () => {
                     <h4 className="card-header text-center">
                       {b["Goverment ID"]}
                     </h4>
-                    <div className="pt-2">
-                      <h6 className="py-3 text-center">
-                        {b.Surname + " " + b.Firstname?.toUpperCase()}
-                      </h6>
+                    <div className="pt-2 px-3">
+                      <ul className="list-group list-group-flex">
+                        <li className="list-group-item pt-3 text-center d-flex justify-content-between bg-dark text-white">
+                          <b>Name</b>
+                          <b>{b.Surname + " " + b.Firstname?.toUpperCase()}</b>
+                        </li>
+                        <li className="list-group-item py-3 text-center d-flex justify-content-between bg-dark text-white">
+                          <b>Policy No :</b> <b>{b["Policy Number"]}</b>
+                        </li>
+                      </ul>
+
                       <div className="card-footer d-flex justify-content-center">
                         <a
                           href={b.link}
