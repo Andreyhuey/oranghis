@@ -1,7 +1,8 @@
 import express from "express";
-import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import csRoutes from "./routes/csRoutes.js";
+import sourceRoutes from "./routes/sourceRoutes.js";
 
 // app expressing itself
 const app = express();
@@ -9,15 +10,20 @@ const app = express();
 // Middleware for parsing request body, The request.body values won't work without it
 app.use(express.json());
 
+// For importing env details
+dotenv.config();
+
 // // use to make all the book routes active
 app.use("/cs", csRoutes);
+
+app.use("/source", sourceRoutes);
 
 // used to connect to database
 async function connectToDatabase() {
   try {
-    await mongoose.connect(mongoDBURL);
-    app.listen(PORT, () => {
-      console.log(`App is listening to port: ${PORT}`);
+    await mongoose.connect(`${process.env.MONGODBURL}`);
+    app.listen(`${process.env.PORT}` || 5000, () => {
+      console.log(`App is listening to port: ${process.env.PORT}`);
     });
     console.log("Connected to MongoDB");
   } catch (error) {
@@ -41,4 +47,9 @@ app.get("/", (request, response) => {
 app.get("/cs", (request, response) => {
   console.log(cs);
   return response.status(234).send("cs");
+});
+
+app.get("/source", (request, response) => {
+  console.log(source);
+  return response.status(234).send("source");
 });
