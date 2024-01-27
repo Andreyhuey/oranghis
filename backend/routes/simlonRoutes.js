@@ -74,21 +74,20 @@ router.get("/search/:query", async (request, response) => {
     const searchQuery = people.filter(
       (item) =>
         // for searching of the data with Goverment ID, either in lower case or uppercase or just numbers alone
-        item["Goverment ID"]
-          .toLowerCase()
+        item?.governmentId
+          ?.toLowerCase()
           .replaceAll(" ", "")
-          .includes(query.toLowerCase().replaceAll(" ", "")) ||
+          .includes(query?.toLowerCase().replaceAll(" ", "")) ||
         // for searching through the data with surname, surname & firstname
-        (item.Surname.toLowerCase() + " " + item.Firstname.toLowerCase())
+        (item?.lastName?.toLowerCase() + " " + item?.firstName?.toLowerCase())
           .toLowerCase()
           .replaceAll(" ", "")
-          .includes(query.toLowerCase().replaceAll(" ", "")) ||
+          .includes(query?.toLowerCase().replaceAll(" ", "")) ||
         // for searching through the data with firstname, firstname & surname
-        (item.Firstname.toLowerCase() + " " + item.Surname.toLowerCase())
+        (item?.firstName?.toLowerCase() + " " + item?.lastName?.toLowerCase())
           .toLowerCase()
           .replaceAll(" ", "")
-          .includes(query.toLowerCase().replaceAll(" ", "")) ||
-        item.Provider.toLowerCase().includes(query.toLowerCase())
+          .includes(query?.toLowerCase().replaceAll(" ", ""))
     );
 
     // response returned from request
