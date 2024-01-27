@@ -1,16 +1,46 @@
 import express from "express";
-import { Source } from "../models/sourceModel.js";
+import { Simlon } from "../models/simlonModel.js";
 
 const router = express.Router();
 
+// used to get a single personnel by id
 router.get("/:id", async (request, response) => {
   try {
+    //  request made to get all peoples
+
     const { id } = request.params;
 
-    const people = await Source.findById(id);
+    const people = await Simlon.findById(id);
 
     // response returned from request
     return response.status(200).json(people);
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
+  }
+});
+
+// used to update a personnel details
+router.put("/:id", async (request, response) => {
+  try {
+    // if (!request.body.Age) {
+    //   console.log("Send all required fields");
+    //   return response.status(400).send({
+    //     message: "Send all required fields",
+    //   });
+    // }
+
+    const { id } = request.params;
+
+    const result = await Simlon.findByIdAndUpdate(id, request.body);
+
+    if (!result) {
+      return response.status(404).json({ message: "Personnel not found" });
+    }
+
+    return response
+      .status(200)
+      .send({ message: "Personnel updated successfully" });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
@@ -21,7 +51,7 @@ router.get("/:id", async (request, response) => {
 router.get("/", async (request, response) => {
   try {
     // request made to get all personnels
-    const people = await Source.find({});
+    const people = await Simlon.find({});
 
     // response returned from request
     return response.status(200).json({
@@ -39,7 +69,7 @@ router.get("/search/:query", async (request, response) => {
   try {
     const { query } = request.params;
 
-    const people = await Source.find({});
+    const people = await Simlon.find({});
 
     const searchQuery = people.filter(
       (item) =>

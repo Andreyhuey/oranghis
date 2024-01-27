@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const sourceSchema = mongoose.Schema({
-  Column1: Number || String,
+  Column1: String,
   "Policy Number": String,
   "Goverment ID": String,
   Surname: String,
@@ -24,4 +24,4 @@ const sourceSchema = mongoose.Schema({
   link: String,
 });
 
-export const Source = mongoose.model("source", sourceSchema);
+export const Source = mongoose.model("Source", sourceSchema);

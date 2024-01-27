@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import authRoute from "./routes/AuthRoute.js";
 import csRoutes from "./routes/csRoutes.js";
 import sourceRoutes from "./routes/sourceRoutes.js";
+import simlonRoutes from "./routes/simlonRoutes.js";
 
 // app expressing itself
 const app = express();
@@ -23,13 +24,15 @@ dotenv.config();
 // CORS policy
 app.use(cors());
 
-//
+// For user authentication and verification
 app.use("/", authRoute);
 
 // // use to make all the book routes active
 app.use("/cs", csRoutes);
 
 app.use("/source", sourceRoutes);
+
+app.use("/simlon", simlonRoutes);
 
 // used to connect to database
 async function connectToDatabase() {
@@ -65,4 +68,9 @@ app.get("/cs", (request, response) => {
 app.get("/source", (request, response) => {
   console.log(source);
   return response.status(234).send("source");
+});
+
+app.get("/simlon", (request, response) => {
+  console.log(simlon);
+  return response.status(234).send("simlon");
 });

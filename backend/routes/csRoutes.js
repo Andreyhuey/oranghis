@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import { CS } from "../models/csModel.js";
 
 const router = express.Router();
@@ -87,7 +87,8 @@ router.get("/search/:query", async (request, response) => {
         (item.Firstname.toLowerCase() + " " + item.Surname.toLowerCase())
           .toLowerCase()
           .replaceAll(" ", "")
-          .includes(query.toLowerCase().replaceAll(" ", ""))
+          .includes(query.toLowerCase().replaceAll(" ", "")) ||
+        item.Provider.toLowerCase().includes(query.toLowerCase())
     );
 
     // response returned from request
