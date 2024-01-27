@@ -1,17 +1,30 @@
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+// routes
+import authRoute from "./routes/AuthRoute.js";
 import csRoutes from "./routes/csRoutes.js";
 import sourceRoutes from "./routes/sourceRoutes.js";
 
 // app expressing itself
 const app = express();
 
+//
+app.use(cookieParser());
+
 // Middleware for parsing request body, The request.body values won't work without it
 app.use(express.json());
 
 // For importing env details
 dotenv.config();
+
+// CORS policy
+app.use(cors());
+
+//
+app.use("/", authRoute);
 
 // // use to make all the book routes active
 app.use("/cs", csRoutes);
