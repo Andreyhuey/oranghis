@@ -5,7 +5,5 @@ export { default as LG } from "./LG.jsx";
 export { default as SB } from "./SB.jsx";
 export { default as TC } from "./TC.jsx";
 export { default as UTH } from "./UTH.jsx";
-import Login from "./Login.jsx";
-import Signup from "./Signup.jsx";
-
-export { Login, Signup };
+export { default as Login } from "./Login.jsx";
+export { default as Signup } from "./Signup.jsx";
