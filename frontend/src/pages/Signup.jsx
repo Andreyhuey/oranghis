@@ -39,7 +39,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.SIGNUPLINK}`,
+        `${process.env.PORT}signup`,
         { ...inputValue },
         { withCredentials: true }
       );

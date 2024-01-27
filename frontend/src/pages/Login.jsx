@@ -34,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.LOGINLINK}`,
+        `${process.env.PORT}login`,
         { ...inputValue },
         { withCredentials: true }
       );
