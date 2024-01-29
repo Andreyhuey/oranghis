@@ -8,6 +8,7 @@ import authRoute from "./routes/AuthRoute.js";
 import csRoutes from "./routes/csRoutes.js";
 import sourceRoutes from "./routes/sourceRoutes.js";
 import simlonRoutes from "./routes/simlonRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 // app expressing itself
 const app = express();
@@ -33,6 +34,8 @@ app.use("/cs", csRoutes);
 app.use("/source", sourceRoutes);
 
 app.use("/simlon", simlonRoutes);
+
+app.use("/user", userRoutes);
 
 // used to connect to database
 async function connectToDatabase() {
