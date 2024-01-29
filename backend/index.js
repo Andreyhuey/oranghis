@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 // routes
-import authRoute from "./routes/AuthRoute.js";
+// import authRoute from "./routes/AuthRoute.js";
 import csRoutes from "./routes/csRoutes.js";
 import sourceRoutes from "./routes/sourceRoutes.js";
 import simlonRoutes from "./routes/simlonRoutes.js";
@@ -27,7 +27,7 @@ dotenv.config();
 app.use(cors());
 
 // For user authentication and verification
-app.use("/", authRoute);
+// app.use("/", authRoute);
 
 // // use to make all the book routes active
 app.use("/cs", csRoutes);
@@ -43,7 +43,7 @@ app.use("/user", userRoutes);
 // used to connect to database
 async function connectToDatabase() {
   try {
-    await mongoose.connect(`${process.env.MONGODBURL}`);
+    await mongoose.connect(`${process.env.MONGODB_URL}`);
     app.listen(`${process.env.PORT}` || 5000, () => {
       console.log(`App is listening to port: ${process.env.PORT}`);
     });
