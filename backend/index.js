@@ -8,6 +8,7 @@ import authRoute from "./routes/AuthRoute.js";
 import csRoutes from "./routes/csRoutes.js";
 import sourceRoutes from "./routes/sourceRoutes.js";
 import simlonRoutes from "./routes/simlonRoutes.js";
+import sampleRoutes from "./routes/sampleRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 // app expressing itself
@@ -34,6 +35,8 @@ app.use("/cs", csRoutes);
 app.use("/source", sourceRoutes);
 
 app.use("/simlon", simlonRoutes);
+
+app.use("/sample", sampleRoutes);
 
 app.use("/user", userRoutes);
 
