@@ -33,11 +33,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        `${process.env.PORT}login`,
-        { ...inputValue },
-        { withCredentials: true }
-      );
+      const { data } = await axios.post("http://127.0.0.1:5000/login", {
+        ...inputValue,
+      });
       console.log(data);
       const { success, message } = data;
       if (success) {

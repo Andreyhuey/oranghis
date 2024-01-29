@@ -12,21 +12,18 @@ const Homepage = () => {
 
   useEffect(() => {
     const verifyCookie = async () => {
-      if (!cookies.token) {
-        navigate("/login");
-      }
-      const { data } = await axios.post(
-        `${process.env.PORT}`,
-        {},
-        { withCredentials: true }
-      );
+      // if (!cookies.token) {
+      //   navigate("/login");
+      // }
+      const { data } = await axios.post("http://127.0.0.1:5000/");
       const { status, user } = data;
+      console.log(data);
       setUsername(user);
-      return status
-        ? toast(`Hello ${user}`, {
-            position: "top-right",
-          })
-        : (removeCookie("token"), navigate("/login"));
+      // return status
+      //   ? toast(`Hello ${user}`, {
+      //       position: "top-right",
+      //     })
+      //   : (removeCookie("token"), navigate("/login"));
     };
     verifyCookie();
   }, [cookies, navigate, removeCookie]);

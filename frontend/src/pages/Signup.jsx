@@ -38,11 +38,9 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        `${process.env.PORT}signup`,
-        { ...inputValue },
-        { withCredentials: true }
-      );
+      const { data } = await axios.post("http://127.0.0.1:5000/signup", {
+        ...inputValue,
+      });
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
